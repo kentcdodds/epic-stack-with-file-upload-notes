@@ -33,6 +33,12 @@ export async function loader({ request, params }: DataFunctionArgs) {
 			content: true,
 			ownerId: true,
 			updatedAt: true,
+			images: {
+				select: {
+					fileId: true,
+					altText: true,
+				},
+			},
 		},
 	})
 	if (!note) {
@@ -107,6 +113,17 @@ export default function NoteRoute() {
 					<p className="whitespace-break-spaces text-sm md:text-lg">
 						{data.note.content}
 					</p>
+					<ul className="flex flex-wrap gap-5 py-5">
+						{data.note.images.map(image => (
+							<li key={image.fileId}>
+								<img
+									src={`/resources/file/${image.fileId}`}
+									alt={image.altText ?? ''}
+									className="h-32 w-32 rounded-lg object-cover"
+								/>
+							</li>
+						))}
+					</ul>
 				</div>
 			</div>
 			{data.isOwner ? (

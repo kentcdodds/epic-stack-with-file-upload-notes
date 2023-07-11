@@ -33,8 +33,12 @@ export async function action({ request }: DataFunctionArgs) {
 	const image = await prisma.image.findFirst({
 		select: { fileId: true },
 		where: {
-			fileId: imageId,
-			user: { id: userId },
+			AND: [
+				{ fileId: imageId },
+				{
+					OR: [{ user: { id: userId } }, { note: { ownerId: userId } }],
+				},
+			],
 		},
 	})
 	if (!image) {

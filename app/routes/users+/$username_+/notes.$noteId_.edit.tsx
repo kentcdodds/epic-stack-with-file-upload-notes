@@ -11,11 +11,22 @@ export async function loader({ params, request }: DataFunctionArgs) {
 			id: params.noteId,
 			ownerId: userId,
 		},
+		select: {
+			id: true,
+			title: true,
+			content: true,
+			images: {
+				select: {
+					fileId: true,
+					altText: true,
+				},
+			},
+		},
 	})
 	if (!note) {
 		throw new Response('Not found', { status: 404 })
 	}
-	return json({ note: note })
+	return json({ note })
 }
 
 export default function NoteEdit() {
