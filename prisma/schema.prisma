@@ -27,6 +27,9 @@ model Image {
   updatedAt DateTime @updatedAt
 
   user User?
+
+  note   Note?   @relation(fields: [noteId], references: [id])
+  noteId String?
 }
 
 model Role {
@@ -120,4 +123,6 @@ model Note {
 
   owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ownerId String
+
+  images Image[]
 }
